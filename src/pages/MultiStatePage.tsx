@@ -85,7 +85,7 @@ export const MultiStatePage: React.FC = () => {
               </p>
 
               <div className="bg-muted p-4 rounded not-prose">
-                <p className="font-mono text-sm">h<sub>rs</sub>(t|X) = h<sub>rs,0</sub>(t) × exp(β<sub>rs</sub>'X)</p>
+                <p className="font-mono text-sm">h<sub>rs</sub>(t|X) = h<sub>rs,0</sub>(t) * exp(β<sub>rs</sub>&apos;X)</p>
               </div>
 
               <h3>Applications</h3>
