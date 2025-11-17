@@ -25,7 +25,6 @@ export const LandmarkPage: React.FC = () => {
     time: d.time - landmarkTime,
   }))
 
-  const kmAll = calculateKaplanMeier(allData)
   const kmLandmark = calculateKaplanMeier(landmarkData)
 
   const chartData = kmLandmark.time.map((t, i) => ({

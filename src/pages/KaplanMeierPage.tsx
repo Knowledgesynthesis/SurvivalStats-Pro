@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Button } from '@/components/ui/Button'
 import { Slider } from '@/components/ui/Slider'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/Tabs'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { generateExponentialData, generateTwoGroupData } from '@/lib/dataGenerators'
 import { calculateKaplanMeier, logRankTest } from '@/lib/survivalAnalysis'
 import { useProgressStore } from '@/store/progressStore'
