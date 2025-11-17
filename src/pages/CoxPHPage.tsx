@@ -33,6 +33,23 @@ export const CoxPHPage: React.FC = () => {
   const km1 = calculateKaplanMeier(group1)
   const km2 = calculateKaplanMeier(group2)
 
+  // Create log-log plot data
+  const logLogData = []
+  const maxLength = Math.max(km1.time.length, km2.time.length)
+
+  for (let i = 1; i < maxLength && i < 50; i++) {
+    if (i < km1.time.length && i < km2.time.length) {
+      const s1 = Math.max(km1.survival[i], 0.001)
+      const s2 = Math.max(km2.survival[i], 0.001)
+
+      logLogData.push({
+        time: km1.time[i],
+        loglog1: Math.log(-Math.log(s1)),
+        loglog2: Math.log(-Math.log(s2)),
+      })
+    }
+  }
+
   // Simulate Schoenfeld residuals (simplified for educational purposes)
   const schoenfelData = km1.time.slice(1, 30).map((t, i) => ({
     time: t,
@@ -192,11 +209,7 @@ export const CoxPHPage: React.FC = () => {
                 </p>
                 <div className="w-full h-64">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={km1.time.map((t, i) => ({
-                      time: t,
-                      loglog1: Math.log(-Math.log(Math.max(km1.survival[i], 0.001))),
-                      loglog2: Math.log(-Math.log(Math.max(km2.survival[i] || 0.001, 0.001))),
-                    }))}>
+                    <LineChart data={logLogData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="time" label={{ value: 'Time', position: 'insideBottom', offset: -5 }} />
                       <YAxis label={{ value: 'log(-log(S(t)))', angle: -90, position: 'insideLeft' }} />
