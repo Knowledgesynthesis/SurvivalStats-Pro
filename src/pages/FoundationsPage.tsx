@@ -228,7 +228,7 @@ export const FoundationsPage: React.FC = () => {
                     <p>S(t) = exp(-H(t))</p>
                     <p>H(t) = -ln(S(t))</p>
                     <p>h(t) = -d/dt[ln(S(t))]</p>
-                    <p>f(t) = h(t) × S(t)</p>
+                    <p>f(t) = h(t) * S(t)</p>
                   </div>
                   <p className="text-xs text-muted-foreground mt-2">
                     where f(t) is the probability density function

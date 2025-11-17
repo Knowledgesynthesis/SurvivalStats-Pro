@@ -374,7 +374,7 @@ export const KaplanMeierPage: React.FC = () => {
                 The variance of the KM estimator is calculated using Greenwood's formula:
               </p>
               <div className="bg-muted p-4 rounded font-mono text-sm">
-                Var[S(t)] = S(t)² × ∑<sub>i: t<sub>i</sub> ≤ t</sub> d<sub>i</sub> / (n<sub>i</sub> × (n<sub>i</sub> - d<sub>i</sub>))
+                Var[S(t)] = S(t)² * ∑<sub>i: t<sub>i</sub> ≤ t</sub> d<sub>i</sub> / (n<sub>i</sub> * (n<sub>i</sub> - d<sub>i</sub>))
               </div>
 
               <h3>The Log-Rank Test</h3>

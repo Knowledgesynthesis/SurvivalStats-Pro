@@ -174,7 +174,7 @@ export const CompetingRisksPage: React.FC = () => {
               </p>
 
               <div className="bg-muted p-4 rounded not-prose">
-                <p className="font-mono text-sm">CIF_j(t) = ∫₀ᵗ S(u) × h_j(u) du</p>
+                <p className="font-mono text-sm">CIF_j(t) = ∫₀ᵗ S(u) * h_j(u) du</p>
                 <p className="text-xs text-muted-foreground mt-2">
                   where S(u) is overall survival and h_j(u) is cause-specific hazard for event j
                 </p>
@@ -207,7 +207,7 @@ export const CompetingRisksPage: React.FC = () => {
               </p>
 
               <div className="bg-muted p-4 rounded not-prose">
-                <p className="font-mono text-sm">h*_j(t|X) = h*_{0j}(t) × exp(β'X)</p>
+                <p className="font-mono text-sm">h*_j(t|X) = h*_0j(t) * exp(β&apos;X)</p>
                 <p className="text-xs text-muted-foreground mt-2">
                   Similar to Cox model but for subdistribution hazard
                 </p>

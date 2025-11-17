@@ -109,7 +109,7 @@ export const CoxPHPage: React.FC = () => {
                 <div className="p-4 rounded-lg bg-muted space-y-3">
                   <h4 className="font-semibold">Cox PH Model</h4>
                   <div className="space-y-1 text-sm font-mono">
-                    <p>h(t|X) = h₀(t) × exp(β₁×Age + β₂×Treatment)</p>
+                    <p>h(t|X) = h₀(t) * exp(β₁*Age + β₂*Treatment)</p>
                     <p className="text-muted-foreground">where h₀(t) is the baseline hazard</p>
                   </div>
                   <div className="space-y-2 mt-4">
