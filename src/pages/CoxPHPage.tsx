@@ -3,9 +3,9 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Button } from '@/components/ui/Button'
 import { Slider } from '@/components/ui/Slider'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/Tabs'
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, LineChart, Line } from 'recharts'
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, LineChart, Line, Legend } from 'recharts'
 import { useProgressStore } from '@/store/progressStore'
-import { generateDataWithCovariates, generateNonProportionalHazardsData } from '@/lib/dataGenerators'
+import { generateNonProportionalHazardsData } from '@/lib/dataGenerators'
 import { calculateKaplanMeier } from '@/lib/survivalAnalysis'
 import { Badge } from '@/components/ui/Badge'
 import { AlertCircle } from 'lucide-react'
@@ -23,15 +23,6 @@ export const CoxPHPage: React.FC = () => {
   useEffect(() => {
     updateLastAccessed(MODULE_ID)
   }, [])
-
-  // Generate data with covariates
-  const data = generateDataWithCovariates(
-    sampleSize,
-    0.05,
-    { age: ageCoefficent, treatment: treatmentCoefficient },
-    0.2,
-    refreshKey
-  )
 
   // Calculate HR for treatment
   const treatmentHR = Math.exp(treatmentCoefficient)

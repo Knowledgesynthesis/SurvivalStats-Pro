@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { Moon, Sun, Menu, Activity } from 'lucide-react'
 import { useThemeStore } from '@/store/themeStore'
 import { Button } from '@/components/ui/Button'
-import { cn } from '@/lib/utils'
 
 interface HeaderProps {
   onMenuClick?: () => void
