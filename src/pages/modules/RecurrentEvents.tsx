@@ -42,7 +42,7 @@ function RecurrentLab() {
   const [rr, setRr] = useState(0.7)
   const [fv, setFv] = useState(1)
   const [n, setN] = useState(400)
-  const [seed, setSeed] = useState(6)
+  const [seed, setSeed] = useState(10)
   const fu = 24
   const dn = useDeferredValue(n)
   const dRate = useDeferredValue(rate)

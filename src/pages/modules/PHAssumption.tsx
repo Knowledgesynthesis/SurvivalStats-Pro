@@ -104,7 +104,7 @@ function DiagnoseLab() {
           yLabel="β(t)"
           height={230}
           yDomain={[-4, 3]}
-          refLines={[{ y: fit.beta[0], label: `Cox β̂ = ${fmt(fit.beta[0], 2)}` }, { y: 0 }]}
+          refLines={[{ y: fit.beta[0], label: `Cox estimate ${fmt(fit.beta[0], 2)}` }, { y: 0 }]}
         />
       </div>
       <Table
@@ -120,7 +120,7 @@ function DiagnoseLab() {
       />
       <TryThis
         items={[
-          { do: 'Proportional pattern: does the smooth stay flat, and are the log-log curves parallel?', see: 'Roughly flat around β̂, with random wiggles, and the GT test is usually non-significant. Parallel log-log curves are a necessary consequence of PH.' },
+          { do: 'Proportional pattern: does the smooth stay flat, and are the log-log curves parallel?', see: 'Roughly flat around the Cox estimate, with random wiggles, and the GT test is usually non-significant. Parallel log-log curves are a necessary consequence of PH.' },
           { do: 'Waning effect, 800 per arm. Compare the single Cox HR with the two piecewise HRs.', see: 'The single HR sits between the early benefit and the later null effect. Quoting it as “the” effect misdescribes both periods.' },
           { do: 'Crossing pattern. Where do the log-log curves meet?', see: 'They cross, and the smooth β(t) changes sign. A single HR near 1 here would hide early harm and late benefit.' },
           { do: 'Proportional pattern with 50 per arm versus 800 per arm, HR 0.9 versus 0.45.', see: 'With small samples the GT test rarely rejects even under real non-PH (low power). With huge samples it flags tiny, unimportant departures. Judge the size and shape of β(t), not just the p-value.' },

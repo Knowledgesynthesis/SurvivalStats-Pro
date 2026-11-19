@@ -84,7 +84,7 @@ export function Lab({ title, goal, controls, children, footer }: { title: string
           <div className="text-sm leading-snug text-ink-2">{goal}</div>
         </div>
       </div>
-      {controls && <div className="grid gap-x-6 gap-y-4 border-b border-line bg-surface-2/40 px-4 py-4 sm:grid-cols-2 sm:px-5 lg:grid-cols-3">{controls}</div>}
+      {controls && <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-x-6 gap-y-4 border-b border-line bg-surface-2/40 px-4 py-4 sm:px-5">{controls}</div>}
       <div className="px-3 py-4 sm:px-5">{children}</div>
       {footer && <div className="border-t border-line px-4 py-3 sm:px-5">{footer}</div>}
     </div>

@@ -200,7 +200,7 @@ export default function Parametric() {
           ]}
         />
         <p>
-          Parameters are estimated by maximising <M>{'\\ell=\\sum_i \\delta_i\\log h(t_i)-H(t_i)'}</M>. Events contribute their density and censored patients their survival probability. The fits in this module reproduce R’s <code>survreg</code> and <code>flexsurvreg</code> to 6 or more digits.
+          Parameters are estimated by maximising <M>{'\\ell=\\sum_i \\delta_i\\log h(t_i)-H(t_i)'}</M>. Events contribute their density and censored patients their survival probability. The fits in this module reproduce R’s <code>survreg</code> (and, for the Gompertz, a direct <code>optim</code> maximisation) to 6 or more digits.
         </p>
       </Section>
 

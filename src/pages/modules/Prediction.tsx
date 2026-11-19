@@ -15,7 +15,7 @@ function ValidationLab() {
   const [nDev, setNDev] = useState(600)
   const [shift, setShift] = useState(1)
   const [caseMix, setCaseMix] = useState(1)
-  const [seed, setSeed] = useState(1)
+  const [seed, setSeed] = useState(3)
   const horizon = 5
   const dN = useDeferredValue(nDev)
   const dS = useDeferredValue(shift)

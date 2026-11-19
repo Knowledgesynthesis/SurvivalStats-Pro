@@ -22,7 +22,7 @@ const LANES: Lane[] = [
 function cifAt(rows: { time: number; cif: number[] }[], k: number, t: number) {
   let v = 0
   for (const r of rows) {
-    if (r.time <= t) v = r.cif[k]
+    if (r.time <= t) v = r.cif[k] ?? 0
     else break
   }
   return v
@@ -43,7 +43,7 @@ function CIFLab() {
   const n36 = naive.filter((r) => r.time <= t).at(-1)?.risk ?? 0
   const series: Series[] = [
     fnSeries(true1, 0, 60, 120, { id: 't1', label: 'True CIF', color: 'var(--ink-2)', dashed: true, width: 1.5 }),
-    { kind: 'step', id: 'aj', label: 'Aalen–Johansen CIF', color: SERIES[0], points: [{ x: 0, y: 0 }, ...aj.rows.map((r) => ({ x: r.time, y: r.cif[0] }))] },
+    { kind: 'step', id: 'aj', label: 'Aalen–Johansen CIF', color: SERIES[0], points: [{ x: 0, y: 0 }, ...aj.rows.map((r) => ({ x: r.time, y: r.cif[0] ?? 0 }))] },
     { kind: 'step', id: 'naive', label: '1 − KM (competing censored)', color: SERIES[7], points: [{ x: 0, y: 0 }, ...naive.map((r) => ({ x: r.time, y: r.risk }))] },
   ]
   // stacked: event 1, event 2, event-free
@@ -51,7 +51,7 @@ function CIFLab() {
   const stack: BandSeries[] = [
     { kind: 'band', id: 'e1', label: 'Event of interest', color: SERIES[0], step: true, opacity: 0.85, gapEdge: true, points: [{ x: 0, y0: 0, y1: 0 }, ...grid.map((tt) => ({ x: tt, y0: 0, y1: cifAt(aj.rows, 0, tt) }))] },
     { kind: 'band', id: 'e2', label: 'Competing event', color: SERIES[6], step: true, opacity: 0.85, gapEdge: true, points: [{ x: 0, y0: 0, y1: 0 }, ...grid.map((tt) => ({ x: tt, y0: cifAt(aj.rows, 0, tt), y1: cifAt(aj.rows, 0, tt) + cifAt(aj.rows, 1, tt) }))] },
-    { kind: 'band', id: 'free', label: 'Event-free', color: 'var(--grid)', step: true, opacity: 0.9, points: [{ x: 0, y0: 0, y1: 1 }, ...grid.map((tt) => ({ x: tt, y0: cifAt(aj.rows, 0, tt) + cifAt(aj.rows, 1, tt), y1: 1 }))] },
+    { kind: 'band', id: 'free', label: 'Event-free', color: 'var(--muted)', step: true, opacity: 0.22, points: [{ x: 0, y0: 0, y1: 1 }, ...grid.map((tt) => ({ x: tt, y0: cifAt(aj.rows, 0, tt) + cifAt(aj.rows, 1, tt), y1: 1 }))] },
   ]
   return (
     <Lab

@@ -81,7 +81,7 @@ function LotteryLab() {
           <Plot ariaLabel="Log partial likelihood as a function of beta" series={[curve, { kind: 'scatter', id: 'now', label: 'current β', color: SERIES[1], points: [{ x: beta, y: logPL(beta) }], r: 5, opacity: 1 }]} xLabel="β" yLabel="log partial likelihood" height={230} refLines={[{ x: fit.beta[0], label: 'MLE' }]} />
           <div className="mt-2 grid grid-cols-2 gap-2">
             <StatTile label="Product of the four probabilities" value={Math.exp(logPL(beta)).toExponential(2)} />
-            <StatTile label="Maximum at" value={`β̂ = ${fit.beta[0].toFixed(3)}`} sub={`HR ${fit.coefs[0].hr.toFixed(2)}, 95% CI ${fit.coefs[0].lower.toFixed(2)}–${fit.coefs[0].upper.toFixed(2)}`} />
+            <StatTile label="Maximum at" value={<M>{`\\hat\\beta = ${fit.beta[0].toFixed(3)}`}</M>} sub={`HR ${fit.coefs[0].hr.toFixed(2)}, 95% CI ${fit.coefs[0].lower.toFixed(2)}–${fit.coefs[0].upper.toFixed(2)}`} />
           </div>
         </div>
       </div>
@@ -132,7 +132,7 @@ function FitLab() {
       }
     >
       <Table
-        head={['Covariate', 'β̂ (SE)', 'HR (95% CI)', 'p', 'True HR']}
+        head={['Covariate', <span key="b"><M>{'\\hat\\beta'}</M> (SE)</span>, 'HR (95% CI)', 'p', 'True HR']}
         rows={fit.coefs.map((cf, j) => [cf.name, `${fmt(cf.coef, 3)} (${fmt(cf.se, 3)})`, `${fmt(cf.hr, 2)} (${fmt(cf.lower, 2)}–${fmt(cf.upper, 2)})`, fmtP(cf.p), fmt(truths[j], 2)])}
       />
       <Forest rows={fit.coefs.map((cf, j) => ({ label: cf.name, est: cf.hr, lo: cf.lower, hi: cf.upper, truth: truths[j] }))} />

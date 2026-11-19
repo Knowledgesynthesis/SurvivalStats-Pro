@@ -39,7 +39,7 @@ export function Slider({ label, value, onChange, min, max, step, format, hint }:
 export function Segmented<T extends string>({ label, value, onChange, options, wide }: { label?: ReactNode; value: T; onChange: (v: T) => void; options: { value: T; label: ReactNode }[]; wide?: boolean }) {
   const long = wide ?? options.reduce((n, o) => n + (typeof o.label === 'string' ? o.label.length + 4 : 8), 0) > 26
   return (
-    <div className={cn('min-w-0', long && 'sm:col-span-2')}>
+    <div className={cn('min-w-0', long && 'col-span-full')}>
       {label && <div className="mb-1 text-sm text-ink-2">{label}</div>}
       <div role="radiogroup" className="inline-flex max-w-full flex-wrap gap-1 rounded-lg border border-line bg-surface-2 p-0.5">
         {options.map((o) => (

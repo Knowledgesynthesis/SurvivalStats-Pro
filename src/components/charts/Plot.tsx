@@ -266,7 +266,7 @@ export function Plot({ series, xLabel, yLabel, xDomain, yDomain, height = 300, r
                 <g key={`sh${i}`}>
                   <rect x={x(Math.max(s.x0, dx0))} width={Math.max(0, x(Math.min(s.x1, dx1)) - x(Math.max(s.x0, dx0)))} y={0} height={ih} fill="var(--ink)" opacity={0.045} />
                   {s.label && (
-                    <text x={x(Math.max(s.x0, dx0)) + 4} y={12} fontSize={11} fill="var(--muted)">
+                    <text x={x(Math.min(s.x1, dx1)) - 5} y={12} textAnchor="end" fontSize={11} fill="var(--muted)">
                       {s.label}
                     </text>
                   )}

@@ -77,11 +77,21 @@ function HandCalc() {
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-ink-2">
-              <th className="py-1.5 pr-3 font-medium">Week t_j</th>
-              <th className="py-1.5 pr-3 font-medium">At risk n_j</th>
-              <th className="py-1.5 pr-3 font-medium">Relapses d_j</th>
-              <th className="py-1.5 pr-3 font-medium">1 − d_j/n_j</th>
-              <th className="py-1.5 font-medium">Ŝ(t_j)</th>
+              <th className="py-1.5 pr-3 font-medium">
+                Week <M>t_j</M>
+              </th>
+              <th className="py-1.5 pr-3 font-medium">
+                At risk <M>n_j</M>
+              </th>
+              <th className="py-1.5 pr-3 font-medium">
+                Relapses <M>d_j</M>
+              </th>
+              <th className="py-1.5 pr-3 font-medium">
+                <M>{'1-d_j/n_j'}</M>
+              </th>
+              <th className="py-1.5 font-medium">
+                <M>{'\\hat S(t_j)'}</M>
+              </th>
             </tr>
           </thead>
           <tbody>
