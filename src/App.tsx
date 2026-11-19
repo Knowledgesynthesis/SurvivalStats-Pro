@@ -1,50 +1,71 @@
-import { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { Layout } from './components/layout/Layout'
-import { useThemeStore } from './store/themeStore'
+import { lazy, Suspense, type ComponentType } from 'react'
+import { BrowserRouter, Link, Route, Routes, useParams } from 'react-router'
+import { Shell } from '@/components/layout/Shell'
+import { HomePage } from '@/pages/HomePage'
 
-// Pages
-import { HomePage } from './pages/HomePage'
-import { FoundationsPage } from './pages/FoundationsPage'
-import { KaplanMeierPage } from './pages/KaplanMeierPage'
-import { CoxPHPage } from './pages/CoxPHPage'
-import { ParametricModelsPage } from './pages/ParametricModelsPage'
-import { CompetingRisksPage } from './pages/CompetingRisksPage'
-import { LandmarkPage } from './pages/LandmarkPage'
-import { MultiStatePage } from './pages/MultiStatePage'
-import { MLConceptsPage } from './pages/MLConceptsPage'
-import { AssessmentPage } from './pages/AssessmentPage'
-import { GlossaryPage } from './pages/GlossaryPage'
-import { SettingsPage } from './pages/SettingsPage'
+const modulePages: Record<string, React.LazyExoticComponent<ComponentType>> = {
+  foundations: lazy(() => import('@/pages/modules/Foundations')),
+  'kaplan-meier': lazy(() => import('@/pages/modules/KaplanMeier')),
+  'comparing-groups': lazy(() => import('@/pages/modules/ComparingGroups')),
+  cox: lazy(() => import('@/pages/modules/Cox')),
+  'ph-assumption': lazy(() => import('@/pages/modules/PHAssumption')),
+  parametric: lazy(() => import('@/pages/modules/Parametric')),
+  'competing-risks': lazy(() => import('@/pages/modules/CompetingRisks')),
+  'time-dependent': lazy(() => import('@/pages/modules/TimeDependent')),
+  'recurrent-events': lazy(() => import('@/pages/modules/RecurrentEvents')),
+  'multi-state': lazy(() => import('@/pages/modules/MultiState')),
+  prediction: lazy(() => import('@/pages/modules/Prediction')),
+  'machine-learning': lazy(() => import('@/pages/modules/MachineLearning')),
+}
+const ChoosePage = lazy(() => import('@/pages/ChoosePage'))
+const ExamPage = lazy(() => import('@/pages/ExamPage'))
+const GlossaryPage = lazy(() => import('@/pages/GlossaryPage'))
+const ReferencesPage = lazy(() => import('@/pages/ReferencesPage'))
+const ProgressPage = lazy(() => import('@/pages/ProgressPage'))
 
-function App() {
-  const { isDarkMode, setTheme } = useThemeStore()
-
-  useEffect(() => {
-    // Initialize theme on mount
-    setTheme(isDarkMode)
-  }, [])
-
+function Loading() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="foundations" element={<FoundationsPage />} />
-          <Route path="kaplan-meier" element={<KaplanMeierPage />} />
-          <Route path="cox-ph" element={<CoxPHPage />} />
-          <Route path="parametric" element={<ParametricModelsPage />} />
-          <Route path="competing-risks" element={<CompetingRisksPage />} />
-          <Route path="landmark" element={<LandmarkPage />} />
-          <Route path="multi-state" element={<MultiStatePage />} />
-          <Route path="ml-concepts" element={<MLConceptsPage />} />
-          <Route path="assessment" element={<AssessmentPage />} />
-          <Route path="glossary" element={<GlossaryPage />} />
-          <Route path="settings" element={<SettingsPage />} />
-        </Route>
-      </Routes>
-    </Router>
+    <div className="flex min-h-[60vh] items-center justify-center text-sm text-muted" role="status">
+      Loading…
+    </div>
   )
 }
 
-export default App
+function NotFound() {
+  return (
+    <div className="mx-auto max-w-xl px-6 py-24 text-center">
+      <h1 className="text-2xl font-semibold text-ink">Page not found</h1>
+      <p className="mt-2 text-ink-2">That address does not match a module.</p>
+      <Link to="/" className="mt-6 inline-block text-accent-ink underline">
+        Back to the course
+      </Link>
+    </div>
+  )
+}
+
+function ModuleRoute() {
+  const { id = '' } = useParams()
+  const Page = modulePages[id]
+  return Page ? <Page /> : <NotFound />
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route element={<Shell />}>
+            <Route index element={<HomePage />} />
+            <Route path="learn/:id" element={<ModuleRoute />} />
+            <Route path="choose" element={<ChoosePage />} />
+            <Route path="exam" element={<ExamPage />} />
+            <Route path="glossary" element={<GlossaryPage />} />
+            <Route path="references" element={<ReferencesPage />} />
+            <Route path="progress" element={<ProgressPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  )
+}
