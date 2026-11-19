@@ -133,7 +133,14 @@ function sweep(P: Prepared, beta: Vec, needS2: boolean, onBlock: (b: EventBlock,
     const idx = P.strata.get(key)!
     const byStop = idx.slice().sort((a, b) => time[b] - time[a])
     const byStart = idx.slice().sort((a, b) => start[b] - start[a])
-    const evTimes = Array.from(new Set(idx.filter((i) => status[i]).map((i) => time[i]))).sort((a, b) => b - a)
+    const deathsAt = new Map<number, number[]>()
+    for (const i of idx) {
+      if (!status[i]) continue
+      const arr = deathsAt.get(time[i])
+      if (arr) arr.push(i)
+      else deathsAt.set(time[i], [i])
+    }
+    const evTimes = Array.from(deathsAt.keys()).sort((a, b) => b - a)
     let S0 = 0
     const S1 = zeros(p)
     const S2 = needS2 ? zerosMat(p) : []
@@ -150,7 +157,7 @@ function sweep(P: Prepared, beta: Vec, needS2: boolean, onBlock: (b: EventBlock,
     for (const t of evTimes) {
       while (ip < byStop.length && time[byStop[ip]] >= t) add(byStop[ip++], 1)
       while (iq < byStart.length && start[byStart[iq]] >= t) add(byStart[iq++], -1)
-      const deaths = idx.filter((i) => status[i] && time[i] === t)
+      const deaths = deathsAt.get(t)!
       let E0 = 0
       const E1 = zeros(p)
       const E2 = needS2 ? zerosMat(p) : []
@@ -263,6 +270,7 @@ export function coxph(data: CoxData, opts: CoxOptions = {}): CoxFit {
   // dLambdaDeath: the hazard increment "experienced" by a subject who dies at a tied time.
   // Under Efron each tied death carries only part of the later terms: Σₖ (1 − k/d)·w̄/(S0 − (k/d)E0).
   const blocks: { stratum: string; time: number; dLambda: number; dLambdaDeath: number; xbar: Vec }[] = []
+  const blockIndex = new Map<string, (typeof blocks)[number]>()
   const schoenfeld: { time: number; stratum: string; resid: Vec }[] = []
   sweep(P, beta, false, (b) => {
     const d = b.deaths.length
@@ -285,7 +293,9 @@ export function coxph(data: CoxData, opts: CoxOptions = {}): CoxFit {
         for (let j = 0; j < p; j++) xbar[j] += (b.S1[j] - f * b.E1[j]) / den / d
       }
     }
-    blocks.push({ stratum: b.stratum, time: b.time, dLambda, dLambdaDeath, xbar })
+    const blk = { stratum: b.stratum, time: b.time, dLambda, dLambdaDeath, xbar }
+    blocks.push(blk)
+    blockIndex.set(`${b.stratum}\u0000${b.time}`, blk)
     for (const i of b.deaths) schoenfeld.push({ time: b.time, stratum: b.stratum, resid: P.x[i].map((v, j) => v - xbar[j]) })
   })
   schoenfeld.sort((a, b) => a.time - b.time)
@@ -341,7 +351,7 @@ export function coxph(data: CoxData, opts: CoxOptions = {}): CoxFit {
     const sr = zeros(p)
     let expected = ri * dA0
     if (P.status[i]) {
-      const blk = blocks.find((b) => b.stratum === key && b.time === P.time[i])!
+      const blk = blockIndex.get(`${key}\u0000${P.time[i]}`)!
       expected -= ri * (blk.dLambda - blk.dLambdaDeath)
       for (let j = 0; j < p; j++) sr[j] += P.x[i][j] - blk.xbar[j]
     }
