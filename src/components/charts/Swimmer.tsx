@@ -9,6 +9,8 @@ export interface Lane {
   outcome: 'event' | 'censor' | 'competing'
   /** optional mid-lane marker (e.g., response time) */
   mark?: number
+  /** recurrent events along the lane */
+  events?: number[]
   dim?: boolean
 }
 
@@ -44,6 +46,7 @@ export function Swimmer({ lanes, xMax, xLabel, refX, refLabel, markLabel, height
                   {ln.id}
                 </text>
                 <line x1={x(ln.start)} x2={x(ln.end)} y1={y} y2={y} stroke="var(--ink-2)" strokeWidth={2} strokeLinecap="round" opacity={0.55} />
+                {ln.events?.map((e, j) => <circle key={j} cx={x(e)} cy={y} r={4.5} fill="var(--s2)" stroke="var(--surface)" strokeWidth={1.5} />)}
                 {ln.mark !== undefined && ln.mark < ln.end && <rect x={x(ln.mark) - 3} y={y - 6} width={6} height={12} rx={1.5} fill="var(--s3)" />}
                 {ln.outcome === 'event' && <circle cx={x(ln.end)} cy={y} r={5} fill={color} stroke="var(--surface)" strokeWidth={2} />}
                 {ln.outcome === 'censor' && <circle cx={x(ln.end)} cy={y} r={4.5} fill="var(--surface)" stroke={color} strokeWidth={2} />}

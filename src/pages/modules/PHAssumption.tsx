@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useDeferredValue, useMemo, useState } from 'react'
 import { ModuleLayout } from '@/components/learn/ModuleLayout'
 import { Callout, CodeTabs, Lab, Quiz, Section, Table, Takeaways, TryThis, Cite } from '@/components/learn/blocks'
 import { M, MathBlock } from '@/components/learn/Math'
@@ -38,7 +38,8 @@ function DiagnoseLab() {
   const [seed, setSeed] = useState(5)
   const followUp = 36
   const spec = useMemo(() => twoArmSpec(shape, 10, hr, change), [shape, hr, change])
-  const d = useMemo(() => simTwoArm(seed, nArm, spec, followUp, 12), [seed, nArm, spec])
+  const dn = useDeferredValue(nArm)
+  const d = useMemo(() => simTwoArm(seed, dn, spec, followUp, 12), [seed, dn, spec])
   const arms = useMemo(() => [0, 1].map((g) => kaplanMeier({ time: d.time.filter((_, i) => d.group[i] === g), status: d.status.filter((_, i) => d.group[i] === g) })), [d])
   const fit = useMemo(() => coxph({ time: d.time, status: d.status, x: d.group.map((g) => [g]) }, { names: ['Treatment'] }), [d])
   const zph = useMemo(() => coxZph(fit, d, 'km'), [fit, d])

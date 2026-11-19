@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useDeferredValue, useMemo, useRef, useState } from 'react'
 import { Play } from 'lucide-react'
 import { ModuleLayout } from '@/components/learn/ModuleLayout'
 import { Callout, CodeTabs, Lab, MythFact, Quiz, Section, Table, Takeaways, TryThis, Cite } from '@/components/learn/blocks'
@@ -99,7 +99,11 @@ function FitLab() {
   const [hrA, setHrA] = useState(1.4)
   const [hrM, setHrM] = useState(1.25)
   const [seed, setSeed] = useState(2)
-  const d = useMemo(() => simCoxTrial(seed, n, hrT, hrA, hrM), [seed, n, hrT, hrA, hrM])
+  const dn = useDeferredValue(n)
+  const dT = useDeferredValue(hrT)
+  const dA = useDeferredValue(hrA)
+  const dM = useDeferredValue(hrM)
+  const d = useMemo(() => simCoxTrial(seed, dn, dT, dA, dM), [seed, dn, dT, dA, dM])
   const fit = useMemo(() => coxph({ time: d.time, status: d.status, x: d.trt.map((t, i) => [t, (d.age[i] - 60) / 10, d.marker[i]]) }, { names: ['Treatment', 'Age (per 10 y)', 'Marker (per SD)'] }), [d])
   const c = harrellC(d.time, d.status, fit.linearPredictor).c
   const truths = [hrT, hrA, hrM]

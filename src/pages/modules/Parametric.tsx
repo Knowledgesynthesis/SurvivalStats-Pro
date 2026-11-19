@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useDeferredValue, useMemo, useState } from 'react'
 import { ModuleLayout } from '@/components/learn/ModuleLayout'
 import { Callout, CodeTabs, Lab, MythFact, Quiz, Section, Table, Takeaways, TryThis, Cite } from '@/components/learn/blocks'
 import { M, MathBlock } from '@/components/learn/Math'
@@ -75,7 +75,11 @@ function ExtrapolationLab() {
   const [n, setN] = useState(300)
   const [seed, setSeed] = useState(3)
   const horizon = 120
+  const dTau = useDeferredValue(tau)
+  const dN = useDeferredValue(n)
   const data = useMemo(() => {
+    const tau = dTau
+    const n = dN
     const rng = mulberry32(seed)
     const time: number[] = []
     const status: number[] = []
@@ -87,7 +91,7 @@ function ExtrapolationLab() {
       status.push(T <= C ? 1 : 0)
     }
     return { time, status }
-  }, [truth, tau, n, seed])
+  }, [truth, dTau, dN, seed])
   const km = useMemo(() => kaplanMeier(data), [data])
   const fits = useMemo(() => (Object.keys(DISTRIBUTIONS) as DistName[]).map((k) => fitParametric(k, data.time, data.status)), [data])
   const bestAIC = Math.min(...fits.map((f) => f.aic))

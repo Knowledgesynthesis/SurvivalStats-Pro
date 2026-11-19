@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useDeferredValue, useMemo, useState } from 'react'
 import { ModuleLayout } from '@/components/learn/ModuleLayout'
 import { Callout, CodeTabs, Lab, MythFact, Quiz, Section, Table, Takeaways, TryThis, Cite } from '@/components/learn/blocks'
 import { M, MathBlock } from '@/components/learn/Math'
@@ -101,7 +101,9 @@ function HazardsLab() {
   const [cs1, setCs1] = useState(1)
   const [cs2, setCs2] = useState(0.5)
   const [seed, setSeed] = useState(4)
-  const d = useMemo(() => simCompeting(seed, 1000, 0.03, 0.03, cs1, cs2, 0.005, 60), [seed, cs1, cs2])
+  const d1 = useDeferredValue(cs1)
+  const d2 = useDeferredValue(cs2)
+  const d = useMemo(() => simCompeting(seed, 1000, 0.03, 0.03, d1, d2, 0.005, 60), [seed, d1, d2])
   const res = useMemo(() => {
     const data = { time: d.time, cause: d.cause }
     const x = d.trt.map((g) => [g])
